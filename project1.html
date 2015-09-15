@@ -31,8 +31,7 @@ window.addEventListener("load",run,false);
 
 function run () {
    // Put calls to your drawing functions for Q1, Q2, Q3 here
-
-
+   drawScenery();
 }
 
 /************************************************************
@@ -41,6 +40,77 @@ function run () {
  * 
  ************************************************************/
 
+function drawScenery(){
+	var c = document.getElementById("canvas-q1");
+	var ctx = c.getContext("2d");
+	var shoreline = 350;
+	var horizon = 200;
+  	drawBeach(ctx,shoreline);
+  	drawOcean(ctx,shoreline,horizon);
+  	drawSky(ctx,horizon);
+  	drawWavePattern(ctx,0,0);
+}
+function drawBeach (ctx,shoreline){
+	var width = ctx.canvas.clientWidth;
+	var height = ctx.canvas.clientHeight;
+	
+	var grd = ctx.createLinearGradient(0,shoreline,0,height);
+	grd.addColorStop(0,"#FFEB99");
+	grd.addColorStop(1,"#FFCC00");
+
+	ctx.fillStyle = grd;
+	ctx.fillRect(0,shoreline,width,height);
+}
+
+function drawOcean (ctx,shoreline,horizon){
+	var width = ctx.canvas.clientWidth;
+	// Create gradient
+	var grd = ctx.createLinearGradient(0,horizon,0,shoreline);
+	grd.addColorStop(0,"#3366FF");
+	grd.addColorStop(0.2,"#33CCFF");
+	grd.addColorStop(0.9,"#ADEBFF");
+	grd.addColorStop(1,"#FFFFFF");
+	// Fill with gradient
+	ctx.fillStyle = grd;
+
+	ctx.fillRect(0,horizon,width,(shoreline-horizon));
+}
+
+function drawSky (ctx,horizon){
+	var width = ctx.canvas.clientWidth;
+	// Create gradient
+	var grd = ctx.createLinearGradient(0,0,0,horizon);
+	grd.addColorStop(0,"#1919D1");
+	grd.addColorStop(1,"#70DBFF");
+	// Fill with gradient
+	ctx.fillStyle = grd;
+	ctx.fillRect(0,0,width,horizon);
+}
+
+function drawWavePattern(ctx,xoffset,yoffset){
+	drawWave(ctx,250+xoffset,250+yoffset);
+  	drawWave(ctx,175+xoffset,275+yoffset);
+  	drawWave(ctx,100+xoffset,230+yoffset);
+  	drawWave(ctx,75+xoffset,300+yoffset);
+  	drawWave(ctx,15+xoffset,255+yoffset);
+  	drawWave(ctx,300+xoffset,295+yoffset);
+  	drawWave(ctx,425+xoffset,220+yoffset);
+  	drawWave(ctx,145+xoffset,250+yoffset);
+  	drawWave(ctx,200+xoffset,325+yoffset);
+  	drawWave(ctx,400+xoffset,315+yoffset);
+  	drawWave(ctx,330+xoffset,265+yoffset);
+  	drawWave(ctx,465+xoffset,295+yoffset);
+  	drawWave(ctx,430+xoffset,265+yoffset);
+}
+function drawWave (ctx, xstart, ystart){
+	ctx.strokeStyle = '#FFFFFF';
+	ctx.beginPath();
+	ctx.ellipse(xstart,ystart,20,5,0,0,Math.PI/2,false);
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.ellipse(xstart+40,ystart,20,5,0,Math.PI/2,Math.PI,false);
+	ctx.stroke();
+}
 
 
 /************************************************************
