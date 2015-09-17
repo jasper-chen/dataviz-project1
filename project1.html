@@ -31,8 +31,51 @@ window.addEventListener("load",run,false);
 
 function run () {
    // Put calls to your drawing functions for Q1, Q2, Q3 here
+   var c = document.getElementById("canvas-q1");
+   var ctx = c.getContext("2d");
+   draw_surfboard(ctx);
+}
 
+function draw_surfboard (ctx){
+	
 
+	ctx.fillStyle="blue";
+	ctx.fillRect(15,135,10,128);
+	ctx.fillStyle="blue";
+	ctx.fillRect(40,135,10,128);
+	//Right Arc
+	ctx.beginPath();
+	ctx.arc(-151,200,210,1.835*Math.PI,0.10*Math.PI);
+	//Outer Right Line
+	ctx.lineTo(50,138);
+	ctx.closePath();
+	ctx.fillStyle="orange";
+	ctx.fill();
+
+	//Left Arc
+	ctx.beginPath();
+	ctx.arc(215,200,210,.90*Math.PI,1.165*Math.PI);
+	//Outer Left Line
+	ctx.lineTo(15,138);
+	ctx.closePath();
+	ctx.fillStyle="orange";
+	ctx.fill();
+
+	//Bottom Line
+	ctx.beginPath();
+	ctx.moveTo(15,267);
+	ctx.lineTo(49,267);
+	//ctx.stroke();
+	//Inner Left Line
+	ctx.beginPath();
+	ctx.moveTo(20,267);
+	ctx.lineTo(20,123);
+	//ctx.stroke();
+	//Inner Right Line
+	ctx.beginPath();
+	ctx.moveTo(44,267);
+	ctx.lineTo(44,123);
+	//ctx.stroke();
 }
 
 /************************************************************
