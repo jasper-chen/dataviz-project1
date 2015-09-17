@@ -38,44 +38,58 @@ function run () {
 
 function draw_surfboard (ctx){
 	
-
-	ctx.fillStyle="blue";
+	//Inner left stripe
+	ctx.fillStyle="#F5DA81";
 	ctx.fillRect(15,135,10,128);
-	ctx.fillStyle="blue";
+	//Inner right stripe
+	ctx.fillStyle="#F5DA81";
 	ctx.fillRect(40,135,10,128);
-	//Right Arc
+	//Right Most Arc
 	ctx.beginPath();
 	ctx.arc(-151,200,210,1.835*Math.PI,0.10*Math.PI);
-	//Outer Right Line
 	ctx.lineTo(50,138);
 	ctx.closePath();
 	ctx.fillStyle="orange";
 	ctx.fill();
 
-	//Left Arc
+	//Left Most Arc
 	ctx.beginPath();
-	ctx.arc(215,200,210,.90*Math.PI,1.165*Math.PI);
-	//Outer Left Line
+	ctx.arc(215,200,210,.90*Math.PI,1.165*Math.PI); 
 	ctx.lineTo(15,138);
 	ctx.closePath();
 	ctx.fillStyle="orange";
 	ctx.fill();
 
-	//Bottom Line
+	//Inner Left Triangle
+
 	ctx.beginPath();
-	ctx.moveTo(15,267);
-	ctx.lineTo(49,267);
-	//ctx.stroke();
-	//Inner Left Line
+	ctx.moveTo(16,135);
+	ctx.lineTo(25,135);
+	ctx.lineTo(25,113);
+	ctx.closePath();
+	ctx.fillStyle="#F5DA81";
+	ctx.fill();
+
+	//Inner Right Triangle
 	ctx.beginPath();
-	ctx.moveTo(20,267);
-	ctx.lineTo(20,123);
-	//ctx.stroke();
-	//Inner Right Line
+	ctx.moveTo(49,135);
+	ctx.lineTo(40,135);
+	ctx.lineTo(40,113);
+	ctx.closePath();
+	ctx.fillStyle="#F5DA81";
+	ctx.fill();
+
+	//middle stripe
+	ctx.fillStyle="#F5DA81";
+	ctx.fillRect(25,115,15,148);
+
+	//triangle at top
 	ctx.beginPath();
-	ctx.moveTo(44,267);
-	ctx.lineTo(44,123);
-	//ctx.stroke();
+	ctx.moveTo(24,115);
+	ctx.lineTo(41,115);
+	ctx.lineTo(32,100);
+	ctx.fillStyle="#F5DA81";
+	ctx.fill();
 }
 
 /************************************************************
