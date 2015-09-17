@@ -32,6 +32,31 @@ window.addEventListener("load",run,false);
 function run () {
    // Put calls to your drawing functions for Q1, Q2, Q3 here
    drawScenery();
+   var canvas2 = document.getElementById("canvas-q2");
+	var ctxt = canvas2.getContext("2d");
+   draw(ctxt,100,100,["f",40,
+		       "r",90,
+		       "f",40,
+		       "l",90,
+		       "f",20,
+		       "l",90,
+		       "f",40,
+		       "r",90,
+		       "f",40,
+		       "r",90,
+		       "f",100,
+		       "r",90,
+		       "f",40,
+		       "r",90,
+		       "f",40,
+		       "l",90,
+		       "f",20,
+		       "l",90,
+		       "f",40,
+		       "r",90,
+		       "f",40,
+		       "r",90,
+		       "f",100]);
 }
 
 /************************************************************
@@ -145,7 +170,37 @@ var letterHMoves = ["f",40,
 		    "r",90,
 		    "f",100];
 
+function draw(ctxt,x,y,moves) {
+	var xhat = 1;
+	var yhat = 0;
+	var angle = 0;
 
+	var currentx = x;
+	var currenty = y;
+	ctxt.beginPath();
+	ctxt.moveTo(currentx,currenty);
+	for (i = 0; i<moves.length; i+=2){
+		if (moves[i] == "f") {
+			currentx = currentx + moves[i+1]*xhat;
+			currenty = currenty + moves[i+1]*yhat;
+			ctxt.lineTo(currentx,currenty );
+		} 
+		else if (moves[i] == "r") {
+			angle = (angle + moves[i+1])%360;
+			xhat = Math.cos((Math.PI*angle)/180);
+			yhat = - Math.sin((Math.PI*angle)/180);
+		}
+		else if (moves[i] == "l") {
+			angle = angle - moves[i+1];
+			if (angle < 0){
+				angle = 360 + angle;
+			}
+			xhat = Math.cos((Math.PI*angle)/180);
+			yhat = - Math.sin((Math.PI*angle)/180);
+		}
+	}
+	ctxt.stroke();
+}
 
 /************************************************************
  *
