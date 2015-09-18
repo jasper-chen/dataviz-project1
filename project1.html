@@ -31,25 +31,139 @@ window.addEventListener("load",run,false);
 
 function run () {
    // Put calls to your drawing functions for Q1, Q2, Q3 here
+   drawScenery();
+   var canvas2 = document.getElementById("canvas-q2");
+	var ctxt = canvas2.getContext("2d");
+   draw(ctxt,100,100,["f",40,
+		       "r",90,
+		       "f",40,
+		       "l",90,
+		       "f",20,
+		       "l",90,
+		       "f",40,
+		       "r",90,
+		       "f",40,
+		       "r",90,
+		       "f",100,
+		       "r",90,
+		       "f",40,
+		       "r",90,
+		       "f",40,
+		       "l",90,
+		       "f",20,
+		       "l",90,
+		       "f",40,
+		       "r",90,
+		       "f",40,
+		       "r",90,
+		       "f",100]);
    var c = document.getElementById("canvas-q1");
    var ctx = c.getContext("2d");
-   draw_surfboard(ctx,20,150);
+
+   drawAnimScenery(); 
+}
+
+
+
+/************************************************************
+ *
+ * Question 1
+ * 
+ ************************************************************/
+
+function drawScenery(){
+	var c = document.getElementById("canvas-q1");
+	var ctx = c.getContext("2d");
+	var shoreline = 350;
+	var horizon = 200;
+	var c_Width = document.getElementById("canvas-q1").width;
+	var c_Height = document.getElementById("canvas-q1").height;
+  	
+  	drawBeach(ctx,shoreline);
+  	drawOcean(ctx,shoreline,horizon);
+  	drawSky(ctx,horizon);
+  	drawWavePattern(ctx,0,0);
+  	draw_surfboard(ctx,20,150);
+	towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
+	umbrella(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
+}
+
+function drawBeach (ctx,shoreline){
+	var width = ctx.canvas.clientWidth;
+	var height = ctx.canvas.clientHeight;
+	
+	var grd = ctx.createLinearGradient(0,shoreline,0,height);
+	grd.addColorStop(0,"#FFEB99");
+	grd.addColorStop(1,"#FFCC00");
+
+	ctx.fillStyle = grd;
+	ctx.fillRect(0,shoreline,width,height);
+}
+
+function drawOcean (ctx,shoreline,horizon){
+	var width = ctx.canvas.clientWidth;
+	// Create gradient
+	var grd = ctx.createLinearGradient(0,horizon,0,shoreline);
+	grd.addColorStop(0,"#3366FF");
+	grd.addColorStop(0.2,"#33CCFF");
+	grd.addColorStop(0.9,"#ADEBFF");
+	grd.addColorStop(1,"#FFFFFF");
+	// Fill with gradient
+	ctx.fillStyle = grd;
+
+	ctx.fillRect(0,horizon,width,(shoreline-horizon));
+}
+
+function drawSky (ctx,horizon){
+	var width = ctx.canvas.clientWidth;
+	// Create gradient
+	var grd = ctx.createLinearGradient(0,0,0,horizon);
+	grd.addColorStop(0,"#1919D1");
+	grd.addColorStop(1,"#70DBFF");
+	// Fill with gradient
+	ctx.fillStyle = grd;
+	ctx.fillRect(0,0,width,horizon);
+}
+
+function drawWavePattern(ctx,xoffset,yoffset){
+	drawWave(ctx,250+xoffset,250+yoffset);
+  	drawWave(ctx,175+xoffset,275+yoffset);
+  	drawWave(ctx,100+xoffset,230+yoffset);
+  	drawWave(ctx,75+xoffset,300+yoffset);
+  	drawWave(ctx,15+xoffset,255+yoffset);
+  	drawWave(ctx,300+xoffset,295+yoffset);
+  	drawWave(ctx,425+xoffset,220+yoffset);
+  	drawWave(ctx,145+xoffset,250+yoffset);
+  	drawWave(ctx,200+xoffset,325+yoffset);
+  	drawWave(ctx,400+xoffset,315+yoffset);
+  	drawWave(ctx,330+xoffset,265+yoffset);
+  	drawWave(ctx,465+xoffset,295+yoffset);
+  	drawWave(ctx,430+xoffset,265+yoffset);
+}
+function drawWave (ctx, xstart, ystart){
+	ctx.strokeStyle = '#FFFFFF';
+	ctx.beginPath();
+	ctx.ellipse(xstart,ystart,20,5,0,0,Math.PI/2,false);
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.ellipse(xstart+40,ystart,20,5,0,Math.PI/2,Math.PI,false);
+	ctx.stroke();
 }
 
 function draw_surfboard (ctx, x, y){
 	
 	//Inner left stripe
-	ctx.fillStyle="#F5DA81";
+	ctx.fillStyle="#C8C8C8";
 	ctx.fillRect(x+15,y+135,10,128);
 	//Inner right stripe
-	ctx.fillStyle="#F5DA81";
+	ctx.fillStyle="#C8C8C8";
 	ctx.fillRect(x+40,y+135,10,128);
 	//Right Most Arc
 	ctx.beginPath();
 	ctx.arc(x-151,y+200,210,1.835*Math.PI,0.10*Math.PI);
 	ctx.lineTo(x+50,y+138);
 	ctx.closePath();
-	ctx.fillStyle="orange";
+	ctx.fillStyle="#00CC66";
 	ctx.fill();
 
 	//Left Most Arc
@@ -57,7 +171,7 @@ function draw_surfboard (ctx, x, y){
 	ctx.arc(x+215,y+200,210,.90*Math.PI,1.165*Math.PI); 
 	ctx.lineTo(x+15,y+138);
 	ctx.closePath();
-	ctx.fillStyle="orange";
+	ctx.fillStyle="#00CC66";
 	ctx.fill();
 
 	//Inner Left Triangle
@@ -67,7 +181,7 @@ function draw_surfboard (ctx, x, y){
 	ctx.lineTo(x+25,y+135);
 	ctx.lineTo(x+25,y+113);
 	ctx.closePath();
-	ctx.fillStyle="#F5DA81";
+	ctx.fillStyle="#C8C8C8";
 	ctx.fill();
 
 	//Inner Right Triangle
@@ -76,11 +190,11 @@ function draw_surfboard (ctx, x, y){
 	ctx.lineTo(x+40,y+135);
 	ctx.lineTo(x+40,y+113);
 	ctx.closePath();
-	ctx.fillStyle="#F5DA81";
+	ctx.fillStyle="#C8C8C8";
 	ctx.fill();
 
 	//middle stripe
-	ctx.fillStyle="#F5DA81";
+	ctx.fillStyle="#C8C8C8";
 	ctx.fillRect(x+25,y+115,15,148);
 
 	//triangle at top
@@ -88,17 +202,50 @@ function draw_surfboard (ctx, x, y){
 	ctx.moveTo(x+24,y+115);
 	ctx.lineTo(x+41,y+115);
 	ctx.lineTo(x+32,y+100);
-	ctx.fillStyle="#F5DA81";
+	ctx.fillStyle="#C8C8C8";
 	ctx.fill();
 }
 
-/************************************************************
- *
- * Question 1
- * 
- ************************************************************/
+function towel(ctx, W, H, dw, dh){
 
+	ctx.beginPath();
+	ctx.moveTo(W, H);
+	ctx.lineTo(W+dw, H);
+	ctx.lineTo(W+(dw*1.2), H+dh);
+	ctx.lineTo(W-(dw*.2), H+dh);
+	ctx.closePath();
+	ctx.fillStyle = "#F08080";
+	ctx.fill();
 
+	ctx.beginPath();
+	ctx.moveTo(W+(dw*.1), H);
+	ctx.lineTo(W+(dw*.9), H);
+	ctx.lineTo(W+dw, H+dh);
+	ctx.lineTo(W, H+dh);
+	ctx.closePath();
+	ctx.fillStyle = "#FF8C00";
+	ctx.fill();
+}
+
+function umbrella(ctx, W, H){
+	ctx.rotate(-20*3.14/180);
+	ctx.fillStyle = "#8B4513";
+	ctx.fillRect(W,H,10,100);
+
+	ctx.beginPath();
+	ctx.arc(W,H, 70, 3.14, 0);
+	ctx.fillStyle = "#FFD700";
+	ctx.fill();
+
+	ctx.beginPath();
+	ctx.moveTo(W-30, H);
+	ctx.lineTo(W, H-70);
+	ctx.lineTo(W+35, H);
+	ctx.closePath();
+	ctx.fillStyle = "#FF7F50";
+	ctx.fill();
+
+}
 
 /************************************************************
  *
@@ -132,14 +279,59 @@ var letterHMoves = ["f",40,
 		    "r",90,
 		    "f",100];
 
+function draw(ctxt,x,y,moves) {
+	var xhat = 1;
+	var yhat = 0;
+	var angle = 0;
 
+	var currentx = x;
+	var currenty = y;
+	ctxt.beginPath();
+	ctxt.moveTo(currentx,currenty);
+	for (i = 0; i<moves.length; i+=2){
+		if (moves[i] == "f") {
+			currentx = currentx + moves[i+1]*xhat;
+			currenty = currenty + moves[i+1]*yhat;
+			ctxt.lineTo(currentx,currenty );
+		} 
+		else if (moves[i] == "r") {
+			angle = (angle + moves[i+1])%360;
+			xhat = Math.cos((Math.PI*angle)/180);
+			yhat = - Math.sin((Math.PI*angle)/180);
+		}
+		else if (moves[i] == "l") {
+			angle = angle - moves[i+1];
+			if (angle < 0){
+				angle = 360 + angle;
+			}
+			xhat = Math.cos((Math.PI*angle)/180);
+			yhat = - Math.sin((Math.PI*angle)/180);
+		}
+	}
+	ctxt.stroke();
+}
 
 /************************************************************
  *
  * Question 3
  * 
  ************************************************************/
-
+function drawAnimScenery() {
+	var c = document.getElementById("canvas-q3");
+	var ctx = c.getContext("2d");
+	var shoreline = 350;
+	var horizon = 200;
+	var c_Width = document.getElementById("canvas-q3").width;
+	var c_Height = document.getElementById("canvas-q3").height;
+  	
+  	drawBeach(ctx,shoreline);
+  	drawOcean(ctx,shoreline,horizon);
+  	drawSky(ctx,horizon);
+  	drawWavePattern(ctx,0,0);
+  	draw_surfboard(ctx,20,150);
+	towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
+	umbrella(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
+}
 
   </script>
 
