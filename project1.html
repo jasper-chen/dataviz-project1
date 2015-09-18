@@ -57,6 +57,65 @@ function run () {
 		       "f",40,
 		       "r",90,
 		       "f",100]);
+   var c = document.getElementById("canvas-q1");
+   var ctx = c.getContext("2d");
+   
+}
+
+function draw_surfboard (ctx){
+	
+	//Inner left stripe
+	ctx.fillStyle="#F5DA81";
+	ctx.fillRect(15,135,10,128);
+	//Inner right stripe
+	ctx.fillStyle="#F5DA81";
+	ctx.fillRect(40,135,10,128);
+	//Right Most Arc
+	ctx.beginPath();
+	ctx.arc(-151,200,210,1.835*Math.PI,0.10*Math.PI);
+	ctx.lineTo(50,138);
+	ctx.closePath();
+	ctx.fillStyle="orange";
+	ctx.fill();
+
+	//Left Most Arc
+	ctx.beginPath();
+	ctx.arc(215,200,210,.90*Math.PI,1.165*Math.PI); 
+	ctx.lineTo(15,138);
+	ctx.closePath();
+	ctx.fillStyle="orange";
+	ctx.fill();
+
+	//Inner Left Triangle
+
+	ctx.beginPath();
+	ctx.moveTo(16,135);
+	ctx.lineTo(25,135);
+	ctx.lineTo(25,113);
+	ctx.closePath();
+	ctx.fillStyle="#F5DA81";
+	ctx.fill();
+
+	//Inner Right Triangle
+	ctx.beginPath();
+	ctx.moveTo(49,135);
+	ctx.lineTo(40,135);
+	ctx.lineTo(40,113);
+	ctx.closePath();
+	ctx.fillStyle="#F5DA81";
+	ctx.fill();
+
+	//middle stripe
+	ctx.fillStyle="#F5DA81";
+	ctx.fillRect(25,115,15,148);
+
+	//triangle at top
+	ctx.beginPath();
+	ctx.moveTo(24,115);
+	ctx.lineTo(41,115);
+	ctx.lineTo(32,100);
+	ctx.fillStyle="#F5DA81";
+	ctx.fill();
 }
 
 /************************************************************
@@ -74,6 +133,7 @@ function drawScenery(){
   	drawOcean(ctx,shoreline,horizon);
   	drawSky(ctx,horizon);
   	drawWavePattern(ctx,0,0);
+  	draw_surfboard(ctx);
 }
 function drawBeach (ctx,shoreline){
 	var width = ctx.canvas.clientWidth;
