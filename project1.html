@@ -60,7 +60,7 @@ function drawScenery(){
   	drawBeach(ctx,shoreline);
   	drawOcean(ctx,shoreline,horizon);
   	drawSky(ctx,horizon);
-  	drawWavePattern(ctx,0,0);
+  	drawWavePattern(ctx,c_Width,15,shoreline,horizon);
   	draw_surfboard(ctx,20,150);
 	towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
 	umbrella(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
@@ -103,20 +103,14 @@ function drawSky (ctx,horizon){
 	ctx.fillRect(0,0,width,horizon);
 }
 
-function drawWavePattern(ctx,xoffset,yoffset){
-	drawWave(ctx,250+xoffset,250+yoffset);
-  	drawWave(ctx,175+xoffset,275+yoffset);
-  	drawWave(ctx,100+xoffset,230+yoffset);
-  	drawWave(ctx,75+xoffset,300+yoffset);
-  	drawWave(ctx,15+xoffset,255+yoffset);
-  	drawWave(ctx,300+xoffset,295+yoffset);
-  	drawWave(ctx,425+xoffset,220+yoffset);
-  	drawWave(ctx,145+xoffset,250+yoffset);
-  	drawWave(ctx,200+xoffset,325+yoffset);
-  	drawWave(ctx,400+xoffset,315+yoffset);
-  	drawWave(ctx,330+xoffset,265+yoffset);
-  	drawWave(ctx,465+xoffset,295+yoffset);
-  	drawWave(ctx,430+xoffset,265+yoffset);
+function drawWavePattern(ctx,width,numwaves,shoreline,horizon){
+	var x = 0;
+	var y = 0;
+	for (i = 0; i<numwaves; i++){
+		x = 500*i/(numwaves-1);
+		y = 0.7*(shoreline-horizon)*Math.random() + 1.1*horizon;
+		drawWave(ctx,x,y);
+	}
 }
 function drawWave (ctx, xstart, ystart){
 	ctx.strokeStyle = '#FFFFFF';
@@ -222,7 +216,7 @@ function umbrella(ctx, W, H){
 	ctx.closePath();
 	ctx.fillStyle = "#FF7F50";
 	ctx.fill();
-
+	ctx.rotate(20*3.14/180);
 }
 
 /************************************************************
@@ -352,24 +346,22 @@ function drawAnimScenery() {
 	var horizon = 200;
 	var c_Width = document.getElementById("canvas-q3").width;
 	var c_Height = document.getElementById("canvas-q3").height;
-	var offset = 0
-	
+	var numwaves = 15;
 	drawBeach(ctx,shoreline);
   	drawOcean(ctx,shoreline,horizon);
   	drawSky(ctx,horizon);
-  	drawWavePattern(ctx,offset,offset);
+  	drawWavePattern(ctx,30,shoreline,horizon);
   	draw_surfboard(ctx,20,150);
 	towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
 	umbrella(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
 
-	window.setInterval(drawAnim, 500);
+	window.setInterval(drawAnim, 300, ctx, numwaves, c_Width, c_Height);
 	
-	function drawAnim(){
-		offset += 5
+	function drawAnim(ctx, numwaves,c_Width,c_Height){
 	  	drawBeach(ctx,shoreline);
 	  	drawOcean(ctx,shoreline,horizon);
 	  	drawSky(ctx,horizon);
-	  	drawWavePattern(ctx,offset,offset);
+	  	drawWavePattern(ctx,c_Width,numwaves,shoreline,horizon);
 	  	draw_surfboard(ctx,20,150);
 		towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
 		umbrella(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
