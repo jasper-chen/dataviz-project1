@@ -33,30 +33,8 @@ function run () {
    // Put calls to your drawing functions for Q1, Q2, Q3 here
    drawScenery();
    var canvas2 = document.getElementById("canvas-q2");
-	var ctxt = canvas2.getContext("2d");
-   draw(ctxt,100,100,["f",40,
-		       "r",90,
-		       "f",40,
-		       "l",90,
-		       "f",20,
-		       "l",90,
-		       "f",40,
-		       "r",90,
-		       "f",40,
-		       "r",90,
-		       "f",100,
-		       "r",90,
-		       "f",40,
-		       "r",90,
-		       "f",40,
-		       "l",90,
-		       "f",20,
-		       "l",90,
-		       "f",40,
-		       "r",90,
-		       "f",40,
-		       "r",90,
-		       "f",100]);
+   var ctxt = canvas2.getContext("2d");
+   fractal(ctxt,100,175);
    var c = document.getElementById("canvas-q1");
    var ctx = c.getContext("2d");
 
@@ -310,6 +288,56 @@ function draw(ctxt,x,y,moves) {
 	}
 	ctxt.stroke();
 }
+
+function fractal(ctxt,x,y) {
+	var side12 = [];
+	var movements = ["f",10,"r",60,"f",10,"l",120,"f",10,"r",60,"f",10];
+	for (var i = 0; i<4; i+=1){
+		if (i == 0){
+			side12 = side12.concat(movements.concat("r",60));
+		}
+		if (i == 1){
+			side12 = side12.concat(movements.concat("l",120));
+		}
+		if (i == 2){
+			side12 = side12.concat(movements.concat("r",60));
+		}
+		if (i == 3){
+			side12 = side12.concat(movements);
+		}
+	}
+	var side3 = [];
+	for (var i = 0; i<4; i+=1){
+		if (i == 0) {
+			side3 = side3.concat(side12.concat("r",60));
+		}
+		if (i == 1) {
+			side3 = side3.concat(side12.concat("l",120));
+		}
+		if (i == 2) {
+			side3 = side3.concat(side12.concat("r",60));
+		}
+		if (i == 3) {
+			side3 = side3.concat(side12);
+		}
+	}
+	var fractal = []
+	for (var i = 0; i<3; i+=1){
+		if (i == 0) {
+			fractal = fractal.concat(side3.concat("l",120));
+		}
+		if (i == 1) {
+			fractal = fractal.concat(side3.concat("l",120));
+		}
+		if (i == 2) {
+			fractal = fractal.concat(side3.concat("l",120));
+		}
+	}	
+
+	draw(ctxt,x,y,fractal);
+}
+
+
 
 /************************************************************
  *
