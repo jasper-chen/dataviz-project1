@@ -319,19 +319,36 @@ function draw(ctxt,x,y,moves) {
 function drawAnimScenery() {
 	var c = document.getElementById("canvas-q3");
 	var ctx = c.getContext("2d");
+
 	var shoreline = 350;
 	var horizon = 200;
 	var c_Width = document.getElementById("canvas-q3").width;
 	var c_Height = document.getElementById("canvas-q3").height;
-  	
-  	drawBeach(ctx,shoreline);
+	var offset = 0
+	
+	drawBeach(ctx,shoreline);
   	drawOcean(ctx,shoreline,horizon);
   	drawSky(ctx,horizon);
-  	drawWavePattern(ctx,0,0);
+  	drawWavePattern(ctx,offset,offset);
   	draw_surfboard(ctx,20,150);
 	towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
 	umbrella(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
+
+	window.setInterval(drawAnim, 500);
+	
+	function drawAnim(){
+		offset += 5
+	  	drawBeach(ctx,shoreline);
+	  	drawOcean(ctx,shoreline,horizon);
+	  	drawSky(ctx,horizon);
+	  	drawWavePattern(ctx,offset,offset);
+	  	draw_surfboard(ctx,20,150);
+		towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
+		umbrella(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
+	}
 }
+
+
 
   </script>
 
