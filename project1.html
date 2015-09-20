@@ -30,15 +30,10 @@
 window.addEventListener("load",run,false);
 
 function run () {
-   // Put calls to your drawing functions for Q1, Q2, Q3 here
-   drawScenery();
-   var canvas2 = document.getElementById("canvas-q2");
-   var ctxt = canvas2.getContext("2d");
-   fractal(ctxt,100,175);
-   var c = document.getElementById("canvas-q1");
-   var ctx = c.getContext("2d");
-
-   drawAnimScenery(); 
+	// Put calls to your drawing functions for Q1, Q2, Q3 her
+	drawScenery();
+	fractal(100,175);
+	drawAnimScenery(); 
 }
 
 
@@ -50,30 +45,36 @@ function run () {
  ************************************************************/
 
 function drawScenery(){
+	//Get the canvas information
 	var c = document.getElementById("canvas-q1");
 	var ctx = c.getContext("2d");
-	var shoreline = 350;
-	var horizon = 200;
 	var c_Width = document.getElementById("canvas-q1").width;
 	var c_Height = document.getElementById("canvas-q1").height;
+	
+	//set the shoreline and the horizon.
+	var shoreline = 350;
+	var horizon = 200;
+	
   	
   	drawBeach(ctx,shoreline,c_Width,c_Height);
   	drawOcean(ctx,shoreline,horizon,c_Width);
   	drawSky(ctx,horizon,c_Width);
   	drawWavePattern(ctx,c_Width,15,shoreline,horizon);
-  	draw_surfboard(ctx,20,150);
-	towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
-	umbrella_1(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
+  	drawSurfboard(ctx,20,150);
+	drawTowel(ctx, c_Width*.6, c_Height*.8, 90, 40);
+	drawUmbrella_1(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
 	drawShark(ctx,300,240,0,0);
 }
 
 
 function drawBeach (ctx,shoreline,width,height){
+	//Create a gradient
 	var grd = ctx.createLinearGradient(0,shoreline,0,height);
 	grd.addColorStop(0,"#FFEB99");
 	grd.addColorStop(1,"#FFCC00");
-
+	// Fill with gradient
 	ctx.fillStyle = grd;
+	//Draw the beach rectangle
 	ctx.fillRect(0,shoreline,width,height);
 }
 
@@ -86,7 +87,7 @@ function drawOcean (ctx,shoreline,horizon,width){
 	grd.addColorStop(1,"#FFFFFF");
 	// Fill with gradient
 	ctx.fillStyle = grd;
-
+	//Draw the ocean rectangle
 	ctx.fillRect(0,horizon,width,(shoreline-horizon));
 }
 
@@ -97,12 +98,18 @@ function drawSky (ctx,horizon,width){
 	grd.addColorStop(1,"#70DBFF");
 	// Fill with gradient
 	ctx.fillStyle = grd;
+	//Draw the sky rectangle
 	ctx.fillRect(0,0,width,horizon);
 }
 
 function drawWavePattern(ctx,width,numwaves,shoreline,horizon){
 	var x = 0;
 	var y = 0;
+	/*To draw the wave pattern we randomly draw a bunch of waves
+	To make sure this looks somewhat even, we set the X position
+	of the wave as the based on how many waves we have already drawn
+	The Y position is a randomly generated number that can range from 
+	slightly below the horizon to slightly above the shoreline.*/
 	for (i = 0; i<numwaves; i++){
 		x = 500*i/(numwaves-1);
 		y = 0.7*(shoreline-horizon)*Math.random() + 1.1*horizon;
@@ -110,7 +117,9 @@ function drawWavePattern(ctx,width,numwaves,shoreline,horizon){
 	}
 }
 function drawWave (ctx, xstart, ystart){
+	//Set the waves to be white
 	ctx.strokeStyle = '#FFFFFF';
+	// Draw the wave out of two ellipse quarters
 	ctx.beginPath();
 	ctx.ellipse(xstart,ystart,20,5,0,0,Math.PI/2,false);
 	ctx.stroke();
@@ -129,7 +138,7 @@ function drawShark(ctx,x,y,osetx,osety){
 	ctx.fill();
 }
 
-function draw_surfboard (ctx, x, y){
+function drawSurfboard (ctx, x, y){
 	//Inner left stripe
 	ctx.fillStyle="#C8C8C8";
 	ctx.fillRect(x+15,y+135,10,128);
@@ -184,7 +193,7 @@ function draw_surfboard (ctx, x, y){
 	ctx.fill();
 }
 
-function towel(ctx, W, H, dw, dh){
+function drawTowel(ctx, W, H, dw, dh){
 
 	ctx.beginPath();
 	ctx.moveTo(W, H);
@@ -205,7 +214,7 @@ function towel(ctx, W, H, dw, dh){
 	ctx.fill();
 }
 
-function umbrella_1(ctxt, W, H){
+function drawUmbrella_1(ctxt, W, H){
 
 ctxt.rotate(-20*3.14/180);
 umbrel_stem(ctxt, W, H, 20);
@@ -234,7 +243,7 @@ ctxt.fillRect(W,H,10,100);
 
 }
 
-function umbrella_2(ctxt, W, H){
+function drawUmbrella_2(ctxt, W, H){
 
 new_W = W+115;
 new_H = H-120;
@@ -279,12 +288,14 @@ var letterHMoves = ["f",40,
 		    "f",100,
 		    "r",90,
 		    "f",40,
+		    "pu",
 		    "r",90,
 		    "f",40,
 		    "l",90,
 		    "f",20,
 		    "l",90,
 		    "f",40,
+		    "pd",
 		    "r",90,
 		    "f",40,
 		    "r",90,
@@ -297,32 +308,67 @@ function draw(ctxt,x,y,moves) {
 
 	var currentx = x;
 	var currenty = y;
+	var pendown = true;
 	ctxt.beginPath();
 	ctxt.moveTo(currentx,currenty);
-	for (i = 0; i<moves.length; i+=2){
+	for (i = 0; i<moves.length; i++){
+		//We want to skip any number we encounter -- these
+		//are handled when we know what instruction they 
+		//refer to. 
+		if (!isNaN(moves[i])){
+			continue;
+		}
+		//Here we want to go forward
 		if (moves[i] == "f") {
-			currentx = currentx + moves[i+1]*xhat;
-			currenty = currenty + moves[i+1]*yhat;
-			ctxt.lineTo(currentx,currenty );
-		} 
+			//If the pen is down, actually draw and update
+			//the current x and y positions
+			if (pendown) {
+				currentx = currentx + moves[i+1]*xhat;
+				currenty = currenty + moves[i+1]*yhat;
+				ctxt.lineTo(currentx,currenty );
+			}
+			else {
+			//If the pen is up, still update positions, 
+			//But move, don't draw a line
+				currentx = currentx + moves[i+1]*xhat;
+				currenty = currenty + moves[i+1]*yhat;
+				ctxt.moveTo(currentx,currenty );
+			}
+		}
+		//Turn right, and calculate new unit vectors 
 		else if (moves[i] == "r") {
+			//Add the roatation and handle angles greater than 360
 			angle = (angle + moves[i+1])%360;
 			xhat = Math.cos((Math.PI*angle)/180);
+			//Negtive because in math up is positive y
 			yhat = - Math.sin((Math.PI*angle)/180);
 		}
+		//Turn left and calculate new unit vectors
 		else if (moves[i] == "l") {
 			angle = angle - moves[i+1];
+			//Handle negative angles
 			if (angle < 0){
 				angle = 360 + angle;
 			}
 			xhat = Math.cos((Math.PI*angle)/180);
+			//Negtive because in math up is positive y
 			yhat = - Math.sin((Math.PI*angle)/180);
+		}
+		//pen up
+		else if (moves[i] == "pu"){
+			pendown = false;
+		}
+		//Pen down
+		else if (moves[i] == "pd"){
+			pendown = true;
 		}
 	}
 	ctxt.stroke();
 }
 
-function fractal(ctxt,x,y) {
+function fractal(x,y) {
+	var canvas2 = document.getElementById("canvas-q2");
+   	var ctxt = canvas2.getContext("2d");
 	var side12 = [];
 	var movements = ["f",10,"r",60,"f",10,"l",120,"f",10,"r",60,"f",10];
 	for (var i = 0; i<4; i+=1){
@@ -378,41 +424,45 @@ function fractal(ctxt,x,y) {
  * 
  ************************************************************/
 function drawAnimScenery() {
+	//Get canvas information
 	var c = document.getElementById("canvas-q3");
 	var ctx = c.getContext("2d");
+	var c_Width = document.getElementById("canvas-q3").width;
+	var c_Height = document.getElementById("canvas-q3").height;
 
 	var shoreline = 350;
 	var horizon = 200;
-	var c_Width = document.getElementById("canvas-q3").width;
-	var c_Height = document.getElementById("canvas-q3").height;
 	var numwaves = 15;
+	//This is for moving the shark and also for the umbrella
 	var offset = 0;
+	//Draw the initial fram of the scenery
 	drawBeach(ctx,shoreline,c_Width,c_Height);
   	drawOcean(ctx,shoreline,horizon,c_Width);
   	drawSky(ctx,horizon,c_Width);
-  	drawWavePattern(ctx,30,shoreline,horizon,c_Width);
-  	draw_surfboard(ctx,20,150);
+  	drawWavePattern(ctx,c_Width,numwaves,shoreline,horizon,c_Width);
+  	drawSurfboard(ctx,20,150);
   	drawShark(ctx,300,240);
-	towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
-	umbrella_2(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
+	drawTowel(ctx, c_Width*.6, c_Height*.8, 90, 40);
+	drawUmbrella_2(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
 
 	window.setInterval(drawAnim, 300, ctx, numwaves, c_Width, c_Height);
 	
 	function drawAnim(ctx, numwaves,c_Width,c_Height){
-		//Here, we're not resetting offset ever, because we don't want a shark-infested beach. 
-		offset = offset + 5;
+		//Here, we're not resetting offset ever, because we don't want a shark-infested beach. One shark is enough for us.
+		offset += 3;
 	  	drawBeach(ctx,shoreline,c_Width,c_Height);
 	  	drawOcean(ctx,shoreline,horizon,c_Width);
 	  	drawSky(ctx,horizon,c_Width);
 	  	drawWavePattern(ctx,c_Width,numwaves,shoreline,horizon,c_Width);
-	  	draw_surfboard(ctx,20,150);
+	  	drawSurfboard(ctx,20,150);
 	  	drawShark(ctx,300,240,-offset,0);
-		towel(ctx, c_Width*.6, c_Height*.8, 90, 40);
-		if ((offset % 10) == 0){
-			umbrella_1(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
+		drawTowel(ctx, c_Width*.6, c_Height*.8, 90, 40);
+		//Rotate the umbrella back and forth every frame
+		if ((offset % 6) == 0){
+			drawUmbrella_1(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
 		}
 		else {
-			umbrella_2(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
+			drawUmbrella_2(ctx, c_Width*.6 - 20, c_Height*.8 + 40);
 		}
 	}
 }
